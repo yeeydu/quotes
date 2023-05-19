@@ -2,7 +2,7 @@
 //include('api.php');
 
 /*
-Plugin Name:  Quotes
+Plugin Name:  Random Quotes Wp
 Plugin URI:   
 Description:  Show a huge number of quotes from an API and from a list that has over 300 famous quotes. All of them from diferent and famous authors, it is to shown in your posts and pages bottom.
 Version:      1.0

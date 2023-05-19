@@ -1,4 +1,4 @@
-=== Random Quotes ===
+=== Random Quotes Wp ===
 Contributors: yeeyson
 Donate link: https://buymeacoffee.com/extramedia19
 Tags: quotes, messages, motivation
