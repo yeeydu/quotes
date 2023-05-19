@@ -14,6 +14,12 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 The Quotes Plugin is a WordPress plugin that allows users to select a quotes source from either an API or a List.
 
+== Installation ==
+
+1. Download the Quotes Plugin files.
+2. Upload the plugin directory to the `wp-content/plugins/` directory of your WordPress installation.
+3. Activate the Quotes Plugin through the 'Plugins' menu in the WordPress admin panel.
+
 
 == Frequently Asked Questions ==
 
