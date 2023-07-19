@@ -80,7 +80,7 @@ add_action('admin_init', 'quotes_plugin_register_settings');
 
 function quotes_source_field_callback()
 {
-    echo '<p>Select a source for the quotes, "API" has a limit of request a second and "List" is a list withing the plugin has over 300 quotes. </p>';
+    echo esc_html('Select a source for the quotes, "API" has a limit of request a second and "List" is a list withing the plugin has over 300 quotes.');
     $selected_source = get_option('quotes_source'); // Get the currently selected source
     // Generate the options for the select field
     $options = array(
@@ -92,7 +92,7 @@ function quotes_source_field_callback()
     echo '<select name="quotes_source">';
     foreach ($options as $value => $label) {
         $selected = ($selected_source === $value) ? 'selected' : '';
-        echo '<option value="' . esc_attr($value) . '" ' . $selected . '>' . esc_html($label) . '</option>';
+        echo '<option value="' . esc_attr($value) . '" ' . esc_attr($selected) . '>' . esc_html($label) . '</option>';
     }
     echo '</select>';
     return $selected_source;
@@ -103,7 +103,7 @@ function quotes_source_section_callback()
 {
     $output = '';
 
-    $output .= '<p>Select a source for the quotes, "API" has a limit of request a second and "List" has over 300 quotes. </p>';
+    $output .= esc_html('Select a source for the quotes, "API" has a limit of request a second and "List" has over 300 quotes.');
     $selected_source = get_option('quotes_source'); // Get the currently selected source
     // Generate the options for the select field
     $options = array(
@@ -115,7 +115,7 @@ function quotes_source_section_callback()
     $output .= '<select name="quotes_source">';
     foreach ($options as $value => $label) {
         $selected = ($selected_source === $value) ? 'selected' : '';
-        $output .= '<option value="' . esc_attr($value) . '" ' . $selected . '>' . esc_html($label) . '</option>';
+        $output .= '<option value="' . esc_attr($value) . '" ' . esc_attr($selected) . '>' . esc_html($label) . '</option>';
     }
     $output .= '</select>';
 
