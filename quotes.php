@@ -19,28 +19,28 @@ if (!defined('ABSPATH')) {
 }
 
 // Add the Quotes menu to the WordPress administrator panel
-function quotes_plugin_menu()
+function Random_Quotes_Plugin_menu()
 {
     add_menu_page(
         'Quotes',       // Menu title
         'Quotes',       // Page title
         'manage_options', // Capability required to access the menu
-        'quotes-plugin', // Menu slug
-        'quotes_plugin_settings_page', // Callback function to display the menu page
+        'Random_Quotes_Plugin', // Menu slug
+        'Random_Quotes_Plugin_settings_page', // Callback function to display the menu page
         'dashicons-format-quote' // Menu icon (optional)
     );
 }
-add_action('admin_menu', 'quotes_plugin_menu');
+add_action('admin_menu', 'Random_Quotes_Plugin_menu');
 
 // Callback function to display the Quotes settings page
-function quotes_plugin_settings_page()
+function Random_Quotes_Plugin_settings_page()
 {
 ?>
     <div class="wrap">
         <h1>Quotes Settings</h1>
         <form method="post" action="options.php">
-            <?php settings_fields('quotes-settings-group'); ?>
-            <?php do_settings_sections('quotes-plugin'); ?>
+            <?php settings_fields('Random_Quotes_Plugin-settings-group'); ?>
+            <?php do_settings_sections('Random_Quotes_Plugin'); ?>
             <?php submit_button(); ?>
         </form>
         <p>Thank you for downloading quotes plugin, this plugin shows a random quote at the bottom of all post and page.</p>
@@ -50,38 +50,38 @@ function quotes_plugin_settings_page()
 }
 
 // Register the Quotes settings
-function quotes_plugin_register_settings()
+function Random_Quotes_Plugin_register_settings()
 {
 
     // Add a field for selecting the Quotes Source
     add_settings_field(
-        'quotes_source_field',      // Field ID
+        'Random_Quotes_Plugin_source_field',      // Field ID
         'Select Quotes Source',     // Field title
-        'quotes_source_field_callback',    // Callback function to display the field
-        'quotes-plugin',            // Menu slug
-        'quotes_source_section'     // Section ID
+        'Random_Quotes_Plugin_source_field_callback',    // Callback function to display the field
+        'Random_Quotes_Plugin',            // Menu slug
+        'Random_Quotes_Plugin_source_section'     // Section ID
     );
 
     // Add a section for Quotes Source
     add_settings_section(
-        'quotes_source_section',    // Section ID
+        'Random_Quotes_Plugin_source_section',    // Section ID
         'Quotes Source',            // Section title
-        'quotes_source_section_callback',  // Callback function to display the section
-        'quotes-plugin'             // Menu slug
+        'Random_Quotes_Plugin_source_section_callback',  // Callback function to display the section
+        'Random_Quotes_Plugin'             // Menu slug
     );
 
     // Register the Quotes Source setting
     register_setting(
-        'quotes-settings-group',    // Settings group
-        'quotes_source'             // Setting name
+        'Random_Quotes_Plugin-settings-group',    // Settings group
+        'Random_Quotes_Plugin_source'             // Setting name
     );
 }
-add_action('admin_init', 'quotes_plugin_register_settings');
+add_action('admin_init', 'Random_Quotes_Plugin_register_settings');
 
-function quotes_source_field_callback()
+function Random_Quotes_Plugin_source_field_callback()
 {
     echo esc_html('Select a source for the quotes, "API" has a limit of request a second and "List" is a list withing the plugin has over 300 quotes.');
-    $selected_source = get_option('quotes_source'); // Get the currently selected source
+    $selected_source = get_option('Random_Quotes_Plugin_source'); // Get the currently selected source
     // Generate the options for the select field
     $options = array(
         'api' => 'API',
@@ -89,7 +89,7 @@ function quotes_source_field_callback()
     );
 
     // Display the select field
-    echo '<select name="quotes_source">';
+    echo '<select name="Random_Quotes_Plugin_source">';
     foreach ($options as $value => $label) {
         $selected = ($selected_source === $value) ? 'selected' : '';
         echo '<option value="' . esc_attr($value) . '" ' . esc_attr($selected) . '>' . esc_html($label) . '</option>';
@@ -99,7 +99,7 @@ function quotes_source_field_callback()
 }
 
 // Callback function to display the Quotes Source section
-function quotes_source_section_callback()
+function Random_Quotes_Plugin_source_section_callback()
 {
     $output = '';
 
@@ -123,12 +123,12 @@ function quotes_source_section_callback()
 }
 
 // filter to add content to post
-add_filter('the_content', 'q435_insert_to_bottom');
+add_filter('the_content', 'Random_Quotes_Plugin_q435_insert_to_bottom');
 
 
-function q435_insert_to_bottom($content)
+function Random_Quotes_Plugin_q435_insert_to_bottom($content)
 {
-    $selectedValue = quotes_source_section_callback();
+    $selectedValue = Random_Quotes_Plugin_source_section_callback();
 
     if ($selectedValue === 'api') {
         include('api.php');
@@ -142,11 +142,6 @@ function q435_insert_to_bottom($content)
         $jsonString = file_get_contents(__DIR__ . '/data/data.json');
         $data = json_decode($jsonString, true); // Set the second argument to `false` if you want an object instead of an array
 
-        /* foreach ($data as $item) {
-            echo "Quote: " . $item['text'] . "<br>";
-            echo "Author: " . $item['from'] . "<br>";
-            echo "<br>";
-        }*/
 
         // Get a random index within the range of the array length
         $randomIndex = array_rand($data);
