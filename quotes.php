@@ -2,15 +2,15 @@
 //include('api.php');
 
 /*
-Plugin Name:  Random Quotes Wp
+Plugin Name:  Random Quotes Plugin
 Plugin URI:   
-Description:  Show a huge number of quotes from an API and from a list that has over 300 famous quotes. All of them from diferent and famous authors, it is to shown in your posts and pages bottom.
+Description:  Show a huge number of quotes from an API and from a list that has over 300 famous quotes. All of them from diferent and famous authors, it is shown in your posts and pages bottom.
 Version:      1.0
 Author:       Yeeyson Duarte
 Author URI:   https://yeeysonduarte.vercel.app/
 License:      GPL2
 License URI:  https://www.gnu.org/licenses/gpl-2.0.html
-Text Domain:  Quotes-tutorial
+Text Domain:  Random Quotes Plugin
 Domain Path:  /languages
 */
 
@@ -18,12 +18,19 @@ if (!defined('ABSPATH')) {
     die('Invalid request.');
 }
 
+// API Endpoint
+define('Random_Quotes_Plugin_API_ENDPOINT', 'https://quotes15.p.rapidapi.com/quotes/random/');
+// Secret keys
+define('RAPIDAPI_HOST', 'quotes15.p.rapidapi.com');
+define('RAPIDAPI_KEY', '9bec4868a9msh16a7c63eb3c566fp126084jsnfd40a828b922');
+
+
 // Add the Quotes menu to the WordPress administrator panel
 function Random_Quotes_Plugin_menu()
 {
     add_menu_page(
-        'Quotes',       // Menu title
-        'Quotes',       // Page title
+        'Random Quotes',       // Menu title
+        'Random Quotes',       // Page title
         'manage_options', // Capability required to access the menu
         'Random_Quotes_Plugin', // Menu slug
         'Random_Quotes_Plugin_settings_page', // Callback function to display the menu page
@@ -37,7 +44,7 @@ function Random_Quotes_Plugin_settings_page()
 {
 ?>
     <div class="wrap">
-        <h1>Quotes Settings</h1>
+        <h1>Settings</h1>
         <form method="post" action="options.php">
             <?php settings_fields('Random_Quotes_Plugin-settings-group'); ?>
             <?php do_settings_sections('Random_Quotes_Plugin'); ?>
@@ -65,7 +72,7 @@ function Random_Quotes_Plugin_register_settings()
     // Add a section for Quotes Source
     add_settings_section(
         'Random_Quotes_Plugin_source_section',    // Section ID
-        'Quotes Source',            // Section title
+        'Random Quotes Source',            // Section title
         'Random_Quotes_Plugin_source_section_callback',  // Callback function to display the section
         'Random_Quotes_Plugin'             // Menu slug
     );
@@ -80,7 +87,7 @@ add_action('admin_init', 'Random_Quotes_Plugin_register_settings');
 
 function Random_Quotes_Plugin_source_field_callback()
 {
-    echo esc_html('Select a source for the quotes, "API" has a limit of request a second and "List" is a list withing the plugin has over 300 quotes.');
+    echo esc_html('Select a source for the quotes, "API" has a limit of request a second and "List" is a list withing the plugin has over 300 quotes.') . "<br/>";
     $selected_source = get_option('Random_Quotes_Plugin_source'); // Get the currently selected source
     // Generate the options for the select field
     $options = array(
@@ -104,7 +111,7 @@ function Random_Quotes_Plugin_source_section_callback()
     $output = '';
 
     $output .= esc_html('Select a source for the quotes, "API" has a limit of request a second and "List" has over 300 quotes.');
-    $selected_source = get_option('quotes_source'); // Get the currently selected source
+    $selected_source = get_option('Random_Quotes_Plugin_source'); // Get the currently selected source
     // Generate the options for the select field
     $options = array(
         'api' => 'API',
@@ -129,6 +136,7 @@ add_filter('the_content', 'Random_Quotes_Plugin_q435_insert_to_bottom');
 function Random_Quotes_Plugin_q435_insert_to_bottom($content)
 {
     $selectedValue = Random_Quotes_Plugin_source_section_callback();
+    $quote = array();
 
     if ($selectedValue === 'api') {
         include('api.php');
